@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synth – Zakup pakietu</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 3rem; background: #f9fafb; color: #111827; }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      margin: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wybierz swój pakiet Synth</h1>
+  <p>Bezpieczne płatności Stripe</p>
+  <div>
+    <button onclick="checkout('prod_SEhp0z8vybDgVo')">Starter – $9/mies</button>
+    <button onclick="checkout('prod_SEhqbdEtIRxMyV')">Pro – $29/mies</button>
+    <button onclick="checkout('prod_SEhrfqL0FKc3g6')">Ultimate – $59/mies</button>
+  </div>
+
+  <script>
+    const stripe = Stripe("pk_live_51QP4aQDAD3OAWo4jPRWnYY7K8AKAQ63JbqMuxP9D1BJSHffu33tqXOoPMizpToxRMNr4YWrZqpQEgTC1MfBHGxAP00AkT92TX3") 
+
+    function checkout(priceId) {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        successUrl: window.location.origin + '/success.html',
+        cancelUrl: window.location.origin + '/cancel.html',
+      }).then(function (result) {
+        if (result.error) {
+          alert(result.error.message);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
